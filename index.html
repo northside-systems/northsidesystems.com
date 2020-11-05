@@ -4,9 +4,11 @@
     <link rel="shortcut icon" href="favicon.ico"/>
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
     <style type="text/css">
+      @import url('https://fonts.googleapis.com/css2?family=Lato&display=auto');
       body {
         height: 100%;
-        font-family: "Montserrat", "Lato", sans-serif;
+        font-family: "Lato", sans-serif;
+        font-display: optional;
         margin: 0;
         overflow: hidden;
       }
@@ -28,11 +30,19 @@
         margin: auto;
       }
       #coming-soon {
-        opacity: 75%;
+        opacity: 0;
         text-align: center;
         margin-top: 1em;
-        font-size: 16px;
+        font-size: 18px;
         font-style: italic;
+        line-height: 18px;
+        animation: fadeInAnimation ease 1s;
+        animation-delay: 0.25s;
+        animation-fill-mode: forwards;
+      }
+      @keyframes fadeInAnimation {
+        from { opacity: 0;    }
+        to   { opacity: 0.75; }
       }
     </style>
     <body>
