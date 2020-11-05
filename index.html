@@ -89,8 +89,6 @@
     </body>
     <script>
       function animate(path, index) {
-        var startDelay = index * 0.1;
-        console.log(startDelay);
         var length = path.getTotalLength();
         path.style.transition = path.style.WebkitTransition = 'none';
         path.style.stroke = '#fff';
@@ -101,7 +99,7 @@
         path.style.strokeOpacity = '1';
         path.getBoundingClientRect(); // Workaround - trigger layout so styles are calculated.
         path.style.transition = path.style.WebkitTransition =
-          '  stroke-dashoffset 2s ease-in-out ' + startDelay + 's' +
+          '  stroke-dashoffset 2s ease-in-out ' + (index * 0.1) + 's' +
           ', fill-opacity 2s ease-in-out 3s' +
           ', stroke-opacity 2s ease-in-out 3s';
 
