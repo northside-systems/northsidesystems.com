@@ -1,6 +1,11 @@
-<html>
+<!DOCTYPE html>
+<html lang="en">
   <head>
+    <meta charset="utf-8">
     <title>Northside Systems</title>
+    <meta name="description" content="Software Engineering and Development Services">
+    <meta name="author" content="Northside Systems, LLC">
+
     <!-- Global site tag (gtag.js) - Google Analytics -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-P2JGB204H8"></script>
     <script>
@@ -9,8 +14,12 @@
       gtag('js', new Date());
       gtag('config', 'G-P2JGB204H8');
     </script>
+
     <link rel="shortcut icon" href="favicon.ico"/>
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+
+    <link rel="stylesheet" href="css/normalize.css">
+    <link rel="stylesheet" href="css/skeleton.css">
     <style type="text/css">
       @import url('https://fonts.googleapis.com/css2?family=Lato&display=auto');
       body {
@@ -19,13 +28,15 @@
         font-display: optional;
         margin: 0;
         overflow: hidden;
+        color: #fff;
+        background-color: #424878;
       }
-      .bgimg-1-w3-display-container {
+      .blue-logo {
         color: #fff;
         background-color: #424878;
         min-height: 100%;
       }
-      .w3-display-middle {
+      .vertical-middle {
         position: absolute;
         top: 50%;
         left: 50%;
@@ -37,27 +48,66 @@
         max-width: 80%;
         margin: auto;
       }
-      #coming-soon {
+      #contact-form {
+        width: 630px;
+        margin: 2em auto;
+        transition: opacity ease-out 0.5s;
+      }
+      #contact-form input {
+        background-color: rgba(255,255,255,0.25);
+        color: #fff;
+        border: 0;
+      }
+      .overlay {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+      }
+      #thank-you {
         opacity: 0;
+        font-size: 18px;
+        font-style: italic;
+        line-height: 2.5em;
+        text-align: center;
+        transition: opacity ease-in 0.5s 0.65s;
+      }
+      #coming-soon {
         text-align: center;
         margin-top: 1em;
         font-size: 18px;
         font-style: italic;
         line-height: 18px;
-        animation: fadeInAnimation ease-in-out 2s;
-        animation-delay: 3s;
+      }
+      .fade-in {
+        opacity: 0;
+        animation: fadeInAnimation ease-in-out 1.5s;
+        animation-delay: 3.5s;
         animation-fill-mode: forwards;
       }
       @keyframes fadeInAnimation {
         from { opacity: 0;    }
         to   { opacity: 0.75; }
       }
+      #contact-form input::placeholder {
+        color: #fff; /*#424878; */
+        opacity: 0.75;
+      }
+      #contact-form input:focus::placeholder {
+        color: #424878;
+      }
+      #contact-form input:focus, input[type="email"]:focus {
+        background-color: rgba(255,255,255,0.5);
+        color: #262945;
+        border: none; }
     </style>
     <body>
-      <div class="bgimg-1-w3-display-container w3-opacity-min" id="home">
-        <div class="w3-display-middle" style="white-space:nowrap;">
+      <div class="section blue-logo">
+        <div class="row">
+          <div class="twelve columns vertical-middle">
           <div id="banner-image">
-            <svg id="logo" width="100%" enable-background="new" version="1.1" viewBox="0 0 135.82 25.4" xmlns="http://www.w3.org/2000/svg" xmlns:cc="http://creativecommons.org/ns#" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:osb="http://www.openswatchbook.org/uri/2009/osb" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
+            <svg aria-label="Northside Systems" id="logo" width="100%" enable-background="new" version="1.1" viewBox="0 0 135.82 25.4" xmlns="http://www.w3.org/2000/svg" xmlns:cc="http://creativecommons.org/ns#" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:osb="http://www.openswatchbook.org/uri/2009/osb" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
               <g transform="translate(-37.09 -223.62)">
                 <g transform="translate(4.6347)">
                   <rect transform="matrix(0,1,1,0,0,0)" x="223.62" y="32.456" width="25.4" height="25.4" enable-background="new" fill="none" opacity=".22"/>
@@ -91,13 +141,67 @@
               </g>
             </svg>
           </div>
-          <div id="coming-soon">
-            Coming Soon
-          </div>
+          <!--<div class="fade-in" id="coming-soon">-->
+            <!--Coming Soon-->
+          <!--</div>-->
+            <div class="container">
+            <div class="row" id="contact">
+              <div class="u-max-full-width" id="contact-form">
+                <form class="fade-in" onsubmit="submitEmail(event)">
+                  <input class="eight columns" type="email" placeholder="Email Address" id="emailInput">
+                  <input class="four columns" type="submit" value="Get in touch">
+                </form>
+              </div>
+              <div class="u-max-full-width overlay" id="thank-you" style="display: none; opacity: 0;">
+                Thanks for your interest!
+              </div>
+            </div>
+            </div>
         </div>
       </div>
+      </div>
     </body>
+
+    <script src='https://cdn.jsdelivr.net/npm/whatwg-fetch@3.5.0/dist/fetch.umd.min.js'></script>
     <script>
+      var ENDPOINT = 'https://script.google.com/macros/s/AKfycbxFrs1uXWU0bKYPxktGqpDe6EUwhT7Q73YaemJ5AGB0D6HJs85j/exec';
+
+      function setDisabled(form, disabled) {
+        form.querySelectorAll('input').forEach(function(i) { i.disabled = disabled });
+      }
+      function submitEmail(ev) {
+        ev.preventDefault();
+        var email = document.getElementById('emailInput').value;
+        if(!email) {
+          // Got to submit something... give a little hint.
+          document.getElementById('emailInput').focus();
+          return;
+        }
+
+        // Disable while fetching to prevent double click.
+        setDisabled(ev.target, true);
+
+        fetch(ENDPOINT, {
+          method: 'POST',
+          mode: "cors",
+          headers: { "Content-Type": "text/plain" },
+          body: JSON.stringify({ Email: email })
+        }).then(function() {
+          var formContainer = document.getElementById('contact-form');
+          var thankYou = document.getElementById('thank-you');
+
+          thankYou.style.display = 'block';
+          thankYou.style.opacity = '0';
+          thankYou.getBoundingClientRect(); // force reflow
+
+          // Trigger tansitions and keep the form disabled.
+          formContainer.style.opacity = '0';
+          thankYou.style.opacity = '0.75';
+        }).catch(function(err) {
+          setDisabled(ev.target, false);
+          alert("There was an error, please try again.");
+        });
+      }
       function animate(path, index) {
         var length = path.getTotalLength();
         path.style.transition = path.style.WebkitTransition = 'none';
