@@ -18,22 +18,56 @@
     <link rel="shortcut icon" href="favicon.ico"/>
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
 
-    <link rel="stylesheet" href="css/normalize.css">
-    <link rel="stylesheet" href="css/skeleton.css">
+    <link rel="stylesheet" href="css/normalize.css"/>
+    <link rel="stylesheet" href="css/skeleton.css"/>
+    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/gh/loadingio/ldbutton@v1.0.1/dist/ldbtn.min.css"/>
+    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/gh/loadingio/loading.css@v2.0.0/dist/loading.min.css"/>
     <style type="text/css">
       @import url('https://fonts.googleapis.com/css2?family=Lato&display=auto');
+      :root {
+        /* Background Color Theme */
+        --R: 66;
+        --G: 72;
+        --B: 120;
+        --background: rgb(var(--R), var(--G), var(--B));
+        --dark: rgb(calc(var(--R) / 2.0), calc(var(--G) / 2.0), calc(var(--B) / 2.0));
+      }
       body {
         height: 100%;
         font-family: "Lato", sans-serif;
         font-display: optional;
         margin: 0;
         overflow: hidden;
+        background-color: var(--background);
         color: #fff;
-        background-color: #424878;
+        --background-opacity: 0;
+      }
+      body::before {
+        content: "";
+        position: absolute;
+        top:0px;
+        right:0px;
+        bottom:0px;
+        left:0px;
+        opacity: var(--background-opacity);
+        background-color: var(--background);
+        background-image: url(background.jpg);
+        background-size: cover;
+        background-blend-mode: lighten;
+        background-repeat: no-repeat;
+        background-attachment: fixed;
+        background-position: center;
+        transition: opacity ease-out 0.5s;
+      }
+      .middle-background {
+        --bg: rgba(var(--R), var(--G), var(--B), 0.90);
+        box-shadow: 0px 0px 10vh 10vh var(--bg);
+        padding: 3em 0;
+        background: var(--bg);
       }
       .blue-logo {
         color: #fff;
-        background-color: #424878;
+        background-color: var(--background);
         min-height: 100%;
       }
       .vertical-middle {
@@ -50,7 +84,7 @@
       }
       #contact-form {
         width: 630px;
-        margin: 2em auto;
+        margin: 0 auto;
         transition: opacity ease-out 0.5s;
       }
       #contact-form input {
@@ -69,7 +103,7 @@
         opacity: 0;
         font-size: 18px;
         font-style: italic;
-        line-height: 2.5em;
+        line-height: 2em;
         text-align: center;
         transition: opacity ease-in 0.5s 0.65s;
       }
@@ -82,8 +116,8 @@
       }
       .fade-in {
         opacity: 0;
-        animation: fadeInAnimation ease-in-out 1.5s;
-        animation-delay: 3.5s;
+        animation: fadeInAnimation ease-in-out 0.5s;
+        animation-delay: 4.0s;
         animation-fill-mode: forwards;
       }
       @keyframes fadeInAnimation {
@@ -91,21 +125,25 @@
         to   { opacity: 0.75; }
       }
       #contact-form input::placeholder {
-        color: #fff; /*#424878; */
+        color: #fff;
         opacity: 0.75;
       }
       #contact-form input:focus::placeholder {
-        color: #424878;
+        color: var(--background);
+      }
+      #contact-form button[type="submit"] {
+        background-color: rgba(255,255,255,0.75);
+        color: var(--dark);
       }
       #contact-form input:focus, input[type="email"]:focus {
         background-color: rgba(255,255,255,0.5);
-        color: #262945;
+        color: var(--dark);
         border: none; }
     </style>
     <body>
       <div class="section blue-logo">
         <div class="row">
-          <div class="twelve columns vertical-middle">
+          <div class="twelve columns vertical-middle middle-background">
           <div id="banner-image">
             <svg aria-label="Northside Systems" id="logo" width="100%" enable-background="new" version="1.1" viewBox="0 0 135.82 25.4" xmlns="http://www.w3.org/2000/svg" xmlns:cc="http://creativecommons.org/ns#" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:osb="http://www.openswatchbook.org/uri/2009/osb" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
               <g transform="translate(-37.09 -223.62)">
@@ -148,8 +186,11 @@
             <div class="row" id="contact">
               <div class="u-max-full-width" id="contact-form">
                 <form class="fade-in" onsubmit="submitEmail(event)">
-                  <input class="eight columns" type="email" placeholder="Email Address" id="emailInput">
-                  <input class="four columns" type="submit" value="Get in touch">
+                  <input class="eight columns" type="email" autocomplete="off" placeholder="Email Address" id="emailInput">
+                  <button class="four columns ld-ext-right" type="submit">
+                    Get in touch
+                    <div class="ld ld-ring ld-spin"></div>
+                  </button>
                 </form>
               </div>
               <div class="u-max-full-width overlay" id="thank-you" style="display: none; opacity: 0;">
@@ -166,8 +207,16 @@
     <script>
       var ENDPOINT = 'https://script.google.com/macros/s/AKfycbxFrs1uXWU0bKYPxktGqpDe6EUwhT7Q73YaemJ5AGB0D6HJs85j/exec';
 
-      function setDisabled(form, disabled) {
-        form.querySelectorAll('input').forEach(function(i) { i.disabled = disabled });
+      // While loading, disable the form and show the spinner.
+      function setLoading(form, loading) {
+        form.querySelectorAll('input,button').forEach(function(i) {
+          i.disabled = loading;
+          if(loading) {
+            i.classList.add('running');
+          } else {
+            i.classList.remove('running');
+          }
+        });
       }
       function submitEmail(ev) {
         ev.preventDefault();
@@ -179,7 +228,7 @@
         }
 
         // Disable while fetching to prevent double click.
-        setDisabled(ev.target, true);
+        setLoading(ev.target, true);
 
         fetch(ENDPOINT, {
           method: 'POST',
@@ -198,7 +247,7 @@
           formContainer.style.opacity = '0';
           thankYou.style.opacity = '0.75';
         }).catch(function(err) {
-          setDisabled(ev.target, false);
+          setLoading(ev.target, false);
           alert("There was an error, please try again.");
         });
       }
@@ -223,6 +272,19 @@
         path.style.fillOpacity = '1';
         path.style.strokeOpacity = '0';
       }
+
+      // Fade in the background image nicely
+      function onImagePreload(style, fn) {
+        var img = new Image();
+        img.onload = fn;
+        img.src = style.backgroundImage.slice(4, -1).replace(/["']/g, "");
+      }
+      var body = document.querySelector('body');
+      onImagePreload(getComputedStyle(body, '::before'), function() {
+        body.style.setProperty('--background-opacity', '1');
+      });
+
+      // Animate the logo immediately without waiting for the background fade-in
       document.querySelectorAll('#logo path').forEach(animate);
     </script>
   </head>
