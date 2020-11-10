@@ -18,8 +18,10 @@
     <link rel="shortcut icon" href="favicon.ico"/>
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
 
-    <link rel="stylesheet" href="css/normalize.css">
-    <link rel="stylesheet" href="css/skeleton.css">
+    <link rel="stylesheet" href="css/normalize.css"/>
+    <link rel="stylesheet" href="css/skeleton.css"/>
+    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/gh/loadingio/ldbutton@v1.0.1/dist/ldbtn.min.css"/>
+    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/gh/loadingio/loading.css@v2.0.0/dist/loading.min.css"/>
     <style type="text/css">
       @import url('https://fonts.googleapis.com/css2?family=Lato&display=auto');
       body {
@@ -109,7 +111,7 @@
       #contact-form input:focus::placeholder {
         color: #424878;
       }
-      #contact-form input[type="submit"] {
+      #contact-form button[type="submit"] {
         background-color: rgba(255,255,255,0.75);
         color: #262945;
       }
@@ -165,7 +167,10 @@
               <div class="u-max-full-width" id="contact-form">
                 <form class="fade-in" onsubmit="submitEmail(event)">
                   <input class="eight columns" type="email" autocomplete="off" placeholder="Email Address" id="emailInput">
-                  <input class="four columns" type="submit" value="Get in touch">
+                  <button class="four columns ld-ext-right" type="submit">
+                    Get in touch
+                    <div class="ld ld-ring ld-spin"></div>
+                  </button>
                 </form>
               </div>
               <div class="u-max-full-width overlay" id="thank-you" style="display: none; opacity: 0;">
@@ -182,8 +187,16 @@
     <script>
       var ENDPOINT = 'https://script.google.com/macros/s/AKfycbxFrs1uXWU0bKYPxktGqpDe6EUwhT7Q73YaemJ5AGB0D6HJs85j/exec';
 
-      function setDisabled(form, disabled) {
-        form.querySelectorAll('input').forEach(function(i) { i.disabled = disabled });
+      // While loading, disable the form and show the spinner.
+      function setLoading(form, loading) {
+        form.querySelectorAll('input,button').forEach(function(i) {
+          i.disabled = loading;
+          if(loading) {
+            i.classList.add('running');
+          } else {
+            i.classList.remove('running');
+          }
+        });
       }
       function submitEmail(ev) {
         ev.preventDefault();
@@ -195,7 +208,7 @@
         }
 
         // Disable while fetching to prevent double click.
-        setDisabled(ev.target, true);
+        setLoading(ev.target, true);
 
         fetch(ENDPOINT, {
           method: 'POST',
@@ -214,7 +227,7 @@
           formContainer.style.opacity = '0';
           thankYou.style.opacity = '0.75';
         }).catch(function(err) {
-          setDisabled(ev.target, false);
+          setLoading(ev.target, false);
           alert("There was an error, please try again.");
         });
       }
