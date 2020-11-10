@@ -24,13 +24,21 @@
     <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/gh/loadingio/loading.css@v2.0.0/dist/loading.min.css"/>
     <style type="text/css">
       @import url('https://fonts.googleapis.com/css2?family=Lato&display=auto');
+      :root {
+        /* Background Color Theme */
+        --R: 66;
+        --G: 72;
+        --B: 120;
+        --background: rgb(var(--R), var(--G), var(--B));
+        --dark: rgb(calc(var(--R) / 2.0), calc(var(--G) / 2.0), calc(var(--B) / 2.0));
+      }
       body {
         height: 100%;
         font-family: "Lato", sans-serif;
         font-display: optional;
         margin: 0;
         overflow: hidden;
-        background-color: #424878;
+        background-color: var(--background);
         color: #fff;
         --background-opacity: 0;
       }
@@ -42,7 +50,7 @@
         bottom:0px;
         left:0px;
         opacity: var(--background-opacity);
-        background-color: #424878;
+        background-color: var(--background);
         background-image: url(background.jpg);
         background-size: cover;
         background-blend-mode: lighten;
@@ -52,13 +60,14 @@
         transition: opacity ease-out 0.5s;
       }
       .middle-background {
-        box-shadow: 0px 0px 10vh 10vh rgba(66, 72, 120, 0.90);
+        --bg: rgba(var(--R), var(--G), var(--B), 0.90);
+        box-shadow: 0px 0px 10vh 10vh var(--bg);
         padding: 3em 0;
-        background: rgba(66, 72, 120, 0.90);
+        background: var(--bg);
       }
       .blue-logo {
         color: #fff;
-        background-color: #424878;
+        background-color: var(--background);
         min-height: 100%;
       }
       .vertical-middle {
@@ -116,19 +125,19 @@
         to   { opacity: 0.75; }
       }
       #contact-form input::placeholder {
-        color: #fff; /*#424878; */
+        color: #fff;
         opacity: 0.75;
       }
       #contact-form input:focus::placeholder {
-        color: #424878;
+        color: var(--background);
       }
       #contact-form button[type="submit"] {
         background-color: rgba(255,255,255,0.75);
-        color: #262945;
+        color: var(--dark);
       }
       #contact-form input:focus, input[type="email"]:focus {
         background-color: rgba(255,255,255,0.5);
-        color: #262945;
+        color: var(--dark);
         border: none; }
     </style>
     <body>
