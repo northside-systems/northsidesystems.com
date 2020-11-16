@@ -1,0 +1,76 @@
+backend:
+  name: gitlab
+  repo: northside-systems/testing-netlify-cms
+  auth_type: implicit
+  app_id: b763f33ddfc81e5202eeadc7c14b2b593df1f00860564fa6e0ddfb541c2e270b
+
+local_backend: true
+media_folder: static/media
+public_folder: /media
+publish_mode: editorial_workflow
+display_url: https://northsidesystems.com
+logo_url: http://localhost:3000/images/logo-black-solo.svg
+
+collections:
+  - name: 'navigation'
+    label: 'Navigation'
+    folder: 'content/nav'
+    format: 'frontmatter'
+    create: true
+    slug: '{{slug}}'
+    editor:
+      preview: false
+    fields:
+      - { label: 'Link Text', name: 'text', widget: 'string' }
+      - label: 'Page'
+        name: 'page'
+        widget: 'relation'
+        collection: 'page'
+        value_field: 'slug'
+        search_fields: ['title','description']
+        display_fields: ['title']
+
+  - name: 'pages'
+    label: 'Page'
+    folder: 'content/pages'
+    format: 'frontmatter'
+    create: true
+    slug: '{{slug}}'
+    editor:
+      preview: false
+    fields:
+      - { label: 'Slug', name: 'slug', widget: 'string' }
+      - { label: 'Title', name: 'title', widget: 'string' }
+      - { label: 'Publish Date', name: 'date', widget: 'datetime' }
+      - { label: 'Description', name: 'description', widget: 'string' }
+      - { label: 'Body', name: 'body', widget: 'markdown' }
+
+  - name: 'settings'
+    label: 'Settings'
+    delete: false # Prevent users from deleting documents in this collection
+    editor:
+      preview: false
+    files:
+      - file: 'content/settings/global.yml'
+        label: 'Global Settings'
+        name: 'global-settings'
+        fields:
+          - { label: Site Title, name: siteTitle, widget: string }
+          - { label: Site Url, name: siteUrl, widget: string, required: false }
+          - {
+              label: Site Description,
+              name: siteDescription,
+              widget: text,
+              required: false,
+            }
+          - label: Social Media Card
+            name: socialMediaCard
+            widget: object
+            fields:
+              - { label: Image, name: image, widget: image, required: false }
+          - {
+              label: Google Analytics Tracking Id,
+              name: googleTrackingId,
+              widget: string,
+              required: false,
+            }
