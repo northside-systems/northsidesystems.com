@@ -1,1 +1,0 @@
-__NUXT_JSONP__("/", {data:[{pages:[{name:"foo"},{name:"bar"}]}],fetch:[],mutations:void 0});
