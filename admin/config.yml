@@ -9,35 +9,39 @@ media_folder: static/media
 public_folder: /media
 publish_mode: editorial_workflow
 display_url: https://northsidesystems.com
-logo_url: http://localhost:3000/images/logo-black-solo.svg
+logo_url: https://dev.northsidesystems.com/images/logo-black-solo.svg
 
 collections:
   - name: 'navigation'
     label: 'Navigation'
-    folder: 'content/nav'
-    format: 'frontmatter'
+    label_singular: 'Navigation Link'
+    folder: 'content/navigation'
     create: true
     slug: '{{slug}}'
+    summary: '{{order}} - {{title}}'
     editor:
       preview: false
+    sortable_fields: ['order','title']
     fields:
-      - { label: 'Link Text', name: 'text', widget: 'string' }
+      - { label: 'Link Text', name: 'title', widget: 'string' }
+      - { label: 'Order', name: 'order', widget: 'number' }
       - label: 'Page'
         name: 'page'
         widget: 'relation'
-        collection: 'page'
-        value_field: 'slug'
+        collection: 'pages'
+        value_field: '{{slug}}'
         search_fields: ['title','description']
-        display_fields: ['title']
+        display_fields: ['{{title}} (/{{slug}})']
 
   - name: 'pages'
-    label: 'Page'
+    label: 'Pages'
+    label_singular: 'Page'
     folder: 'content/pages'
     format: 'frontmatter'
     create: true
     slug: '{{slug}}'
-    editor:
-      preview: false
+    # editor:
+    #   preview: true
     fields:
       - { label: 'Title', name: 'title', widget: 'string' }
       - { label: 'Publish Date', name: 'date', widget: 'datetime' }
@@ -73,3 +77,13 @@ collections:
               widget: string,
               required: false,
             }
+      - file: 'content/settings/hero.yml'
+        label: 'Hero Rotating Items'
+        name: 'hero-items'
+        fields:
+          - label: Items
+            name: items
+            widget: list
+            summary: '{{fields.text}}'
+            collapsed: true
+            field: { label: Text, name: text, widget: string }
