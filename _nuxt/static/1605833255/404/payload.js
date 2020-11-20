@@ -1,0 +1,1 @@
+__NUXT_JSONP__("/404", {data:[{}],fetch:[{year:2020,nav:[{title:"About",page:"about"},{title:"Typography",page:"foo"},{title:"Contact Us",page:"contact"}]}],mutations:void 0});
