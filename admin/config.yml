@@ -77,13 +77,22 @@ collections:
               widget: string,
               required: false,
             }
-      - file: 'content/settings/hero.yml'
-        label: 'Hero Rotating Items'
-        name: 'hero-items'
+      - file: 'content/settings/home.md'
+        label: 'Home Page'
+        name: 'home'
+        format: 'frontmatter'
         fields:
-          - label: Items
-            name: items
+          - label: Hero Headlines
+            label_singular: Headline
+            name: headlines
             widget: list
             summary: '{{fields.text}}'
+            minimize_collapsed: true
             collapsed: true
             field: { label: Text, name: text, widget: string }
+          - label: Hero Text
+            name: hero
+            widget: text
+          - label: Body
+            name: body
+            widget: markdown
