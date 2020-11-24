@@ -9,7 +9,7 @@ media_folder: static/media
 public_folder: /media
 publish_mode: editorial_workflow
 display_url: https://northsidesystems.com
-logo_url: https://dev.northsidesystems.com/images/logo.svg
+logo_url: /images/logo.svg
 
 collections:
   - name: 'navigation'
